@@ -4,6 +4,14 @@ import { getTodosData } from "../Redux/Todos/action.js";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import Sidebar from "./Sidebar.jsx";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
+import Button from "@mui/material/Button";
 
 /*
 {
@@ -99,7 +107,7 @@ const TodoCreate = () => {
   const createNewTask = () => {
     const payload = { ...state };
 
-    fetch(`http://localhost:3001/todos`, {
+    fetch(`https://tododnjson.herokuapp.com/todos`, {
       method: "POST",
       body: JSON.stringify(payload),
       headers: { "Content-Type": "application/json" },
@@ -115,65 +123,74 @@ const TodoCreate = () => {
       </GridItem1>
       <GridItem2>
         <h1>Create Todos</h1>
-        <input
-          type="text"
-          placeholder="Title"
-          value={title}
-          onChange={(e) =>
-            dispatch({ type: "UPDATE_TITLE", payload: e.target.value })
-          }
-        />
-        <br />
 
-        <input
-          type="text"
-          placeholder="Description"
-          value={description}
-          onChange={(e) =>
-            dispatch({ type: "UPDATE_DESCRIPTION", payload: e.target.value })
-          }
-        />
-        <br />
+        <Box
+          component="form"
+          sx={{
+            "& > :not(style)": { m: 1, width: "25ch" },
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          <TextField
+            type="text"
+            id="outlined-basic"
+            label="Title"
+            value={title}
+            onChange={(e) =>
+              dispatch({ type: "UPDATE_TITLE", payload: e.target.value })
+            }
+          />
+          <br />
+          <TextField
+            id="outlined-basic"
+            type="text"
+            label="Description"
+            value={description}
+            onChange={(e) =>
+              dispatch({ type: "UPDATE_DESCRIPTION", payload: e.target.value })
+            }
+          />
+        </Box>
 
-        <div>
-          <label>
-            <input
-              type="radio"
+        <FormControl style={{ marginTop: "10px", marginBottom: "10px" }}>
+          <FormLabel id="demo-radio-buttons-group-label">
+            Choose One Type
+          </FormLabel>
+          <RadioGroup
+            aria-labelledby="demo-radio-buttons-group-label"
+            name="radio-buttons-group"
+          >
+            <FormControlLabel
               checked={status === "Todo"}
               onChange={(e) =>
                 dispatch({ type: "UPDATE_STATUS", payload: "Todo" })
               }
+              control={<Radio />}
+              label="Todo"
             />
-            Todo
-          </label>
-          <br />
-
-          <label>
-            <input
-              type="radio"
+            <FormControlLabel
               checked={status === "InProgress"}
               onChange={(e) =>
                 dispatch({ type: "UPDATE_STATUS", payload: "InProgress" })
               }
+              control={<Radio />}
+              label="InProgress"
             />
-            InProgress
-          </label>
-          <br />
-
-          <label>
-            <input
-              type="radio"
+            <FormControlLabel
               checked={status === "Done"}
               onChange={(e) =>
                 dispatch({ type: "UPDATE_STATUS", payload: "Done" })
               }
+              control={<Radio />}
+              label="Done"
             />
-            Done
-          </label>
-        </div>
+          </RadioGroup>
+        </FormControl>
+
         <br />
 
-        <div>
+        <div style={{ margin: "10px" }}>
           <label>
             <input
               type="checkbox"
@@ -218,7 +235,8 @@ const TodoCreate = () => {
             OTHERS
           </label>
           <br />
-
+          <br />
+          <p>Select date</p>
           <input
             type="date"
             value={date}
@@ -228,13 +246,19 @@ const TodoCreate = () => {
           />
           <br />
 
-          <h1>Create Sub-Tasks</h1>
-          <input
+          <h3>Create Sub-Tasks</h3>
+          <TextField
+            size="small"
+            id="outlined-basic"
             type="text"
+            label="Enter Subtasks"
             value={subTaskInput}
             onChange={(e) => setSubTaskInput(e.target.value)}
           />
-          <button
+          <Button
+            style={{ marginLeft: "10px" }}
+            variant="contained"
+            size="medium"
             onClick={() => {
               const payload = {
                 id: uuid(),
@@ -246,7 +270,7 @@ const TodoCreate = () => {
             }}
           >
             ADD SUBTASK
-          </button>
+          </Button>
 
           <div>
             {subtasks.map((elem) => (
@@ -265,19 +289,22 @@ const TodoCreate = () => {
                   {elem.subtaskTitle}
                 </label>
 
-                <button
+                <Button
+                  variant="contained"
                   onClick={() =>
                     dispatch({ type: "DELETE_SUBTASK", payload: elem.id })
                   }
                 >
                   Delete Sub-Task
-                </button>
+                </Button>
               </div>
             ))}
           </div>
         </div>
 
-        <button onClick={createNewTask}>Create Task</button>
+        <Button variant="contained" color="success" onClick={createNewTask}>
+          Create Task
+        </Button>
       </GridItem2>
     </Container>
   );

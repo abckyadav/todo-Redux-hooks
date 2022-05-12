@@ -65,7 +65,7 @@ const TaskItem = (props) => {
                     status,
                   };
 
-                  fetch(`http://localhost:3001/todos/${id}`, {
+                  fetch(`https://tododnjson.herokuapp.com/todos/${id}`, {
                     method: "PUT",
                     body: JSON.stringify(payload),
                     headers: {
