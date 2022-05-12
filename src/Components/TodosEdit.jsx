@@ -108,7 +108,7 @@ const TodosEdit = () => {
 
   //2. on component mount phase : update your lcal state with the data that comes from server.
   useEffect(() => {
-    fetch(`http://localhost:3001/todos/${id}`)
+    fetch(`https://tododnjson.herokuapp.com/todos/${id}`)
       .then((res) => res.json())
       .then((res) => {
         dispatch({
@@ -132,7 +132,7 @@ const TodosEdit = () => {
 
   const editTask = () => {
     const payload = { ...state };
-    fetch(`http://localhost:3001/todos/${id}`, {
+    fetch(`https://tododnjson.herokuapp.com/todos/${id}`, {
       method: "PUT",
       body: JSON.stringify(payload),
       headers: { "Content-Type": "application/json" },
